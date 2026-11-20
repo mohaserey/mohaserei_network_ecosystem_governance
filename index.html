@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohaserei System Network (MSN) — Ecosystem Governance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Kantumruy+Pro:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Kantumruy Pro', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            gov: {
+              bg: '#050811',
+              surface: '#0b1120',
+              cyan: '#00f0ff',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+            },
+          },
+          boxShadow: {
+            holoCyan: '0 0 24px rgba(0, 240, 255, 0.22)',
+            holoEmerald: '0 0 22px rgba(16, 185, 129, 0.22)',
+            holoAmber: '0 0 22px rgba(245, 158, 11, 0.2)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: #050811;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    .gov-backdrop {
+      background-image:
+        radial-gradient(circle at 12% 8%, rgba(0, 240, 255, 0.13), transparent 42%),
+        radial-gradient(circle at 88% 14%, rgba(16, 185, 129, 0.11), transparent 38%),
+        radial-gradient(circle at 60% 92%, rgba(245, 158, 11, 0.07), transparent 45%),
+        linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    }
+
+    .holo-card {
+      background: linear-gradient(155deg, rgba(11, 17, 32, 0.88) 0%, rgba(5, 8, 17, 0.94) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.88), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .holo-card-emerald {
+      background: linear-gradient(155deg, rgba(11, 24, 34, 0.88) 0%, rgba(5, 8, 17, 0.94) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.88), inset 0 1px 0 rgba(167, 243, 208, 0.07);
+    }
+
+    .status-pulse {
+      animation: govPulse 2.2s infinite;
+    }
+
+    @keyframes govPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.84); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(11, 17, 32, 0.8);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.25);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 240, 255, 0.45);
+    }
+  </style>
+</head>
+<body class="gov-backdrop min-h-screen font-sans text-slate-100 antialiased selection:bg-[#00f0ff]/25 selection:text-[#00f0ff]">
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-30 border-b border-[#00f0ff]/15 bg-[#050811]/88 backdrop-blur-xl">
+    <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Brand Mark -->
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-[#00f0ff]/40 bg-[#00f0ff]/10 text-[#00f0ff] shadow-holoCyan">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3L4 7v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V7l-8-4z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-sm font-bold tracking-wide text-white sm:text-base" data-i18n="navBrand">
+                Mohaserei System Network
+              </span>
+              <span class="rounded-md border border-[#00f0ff]/35 bg-[#00f0ff]/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-[#00f0ff]">
+                MSN GOVERNANCE
+              </span>
+            </div>
+            <p class="text-xs text-slate-400" data-i18n="navSubtitle">
+              Sovereign Charter, UES/HCV Voting &amp; Treasury Council
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Controls: Language Toggle, Voice Brief, Reset Demo State -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Bilingual Toggle -->
+          <div class="flex items-center rounded-xl border border-slate-700/80 bg-[#0b1120] p-0.5 text-xs" role="group" aria-label="Language toggle">
+            <button
+              type="button"
+              data-lang="km"
+              class="lang-btn rounded-lg px-2.5 py-1 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]"
+            >
+              ខ្មែរ
+            </button>
+            <button
+              type="button"
+              data-lang="en"
+              class="lang-btn rounded-lg px-2.5 py-1 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]"
+            >
+              EN
+            </button>
+          </div>
+
+          <!-- Voice Brief Button -->
+          <button
+            type="button"
+            id="voiceBriefBtn"
+            class="flex items-center gap-1.5 rounded-xl border border-[#00f0ff]/35 bg-[#00f0ff]/10 px-3 py-1.5 text-xs font-semibold text-[#00f0ff] transition hover:bg-[#00f0ff]/20 focus:outline-none focus:ring-2 focus:ring-[#00f0ff]"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+            </svg>
+            <span data-i18n="voiceBriefBtn">Voice Brief</span>
+          </button>
+
+          <!-- Reset Demo State Button -->
+          <button
+            type="button"
+            id="resetDemoBtn"
+            class="flex items-center gap-1.5 rounded-xl border border-amber-400/35 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-300 transition hover:bg-amber-500/20 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          >
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            <span data-i18n="resetStateBtn">Reset Demo State</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast / Announcement Banner -->
+  <div
+    id="toastHost"
+    class="pointer-events-none fixed bottom-5 right-5 z-50 flex max-w-sm flex-col gap-2"
+    aria-live="polite"
+  ></div>
+
+  <main class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+    <!-- Hero Header & Governance KPI Strip -->
+    <section class="space-y-4">
+      <div class="holo-card rounded-2xl p-5 sm:p-6">
+        <div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+          <div class="max-w-3xl space-y-1.5">
+            <div class="inline-flex items-center gap-2 rounded-full border border-[#10b981]/35 bg-[#10b981]/10 px-3 py-1 font-mono text-[11px] text-[#10b981]">
+              <span class="h-2 w-2 rounded-full bg-[#10b981] status-pulse"></span>
+              <span data-i18n="heroBadge">MOHASEREI DAO &amp; REGIONAL COUNCIL · CAMBODIA 25 REGIONS</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl" data-i18n="heroTitle">
+              Mohaserei Ecosystem Governance Console
+            </h1>
+            <p class="text-xs leading-relaxed text-slate-300 sm:text-sm" data-i18n="heroDesc">
+              Coordinate protocol proposals, UES/HCV-weighted member voting, regional commune representation across all 25 Cambodian provinces/capital, and transparent MSN treasury allocations.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5 lg:flex-col lg:items-end">
+            <div class="rounded-xl border border-[#00f0ff]/25 bg-[#0b1120] px-3.5 py-2 font-mono text-xs">
+              <span class="text-slate-400" data-i18n="voterIdentityLabel">Active Delegate:</span>
+              <span id="delegateIdDisplay" class="font-semibold text-[#00f0ff]">MSN-GOV-0842</span>
+            </div>
+            <div class="rounded-xl border border-[#10b981]/25 bg-[#0b1120] px-3.5 py-2 font-mono text-xs">
+              <span class="text-slate-400" data-i18n="epochLabel">Governance Epoch:</span>
+              <span class="font-semibold text-[#10b981]">EPOCH #14 · NOV 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Governance KPI Cards -->
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <!-- 1. Active Proposals -->
+        <div class="holo-card rounded-2xl p-4 sm:p-5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold uppercase tracking-wider text-[#00f0ff]" data-i18n="kpiActiveProposals">
+              Active Proposals
+            </span>
+            <span class="rounded-md bg-[#00f0ff]/10 px-2 py-0.5 font-mono text-[11px] text-[#00f0ff]">LIVE</span>
+          </div>
+          <div id="kpiActiveCount" class="mt-2.5 font-mono text-2xl font-bold text-white sm:text-3xl">3</div>
+          <p id="kpiActiveSub" class="mt-1 font-mono text-xs text-slate-400">Out of 5 total proposals</p>
+        </div>
+
+        <!-- 2. Quorum & Approval Thresholds -->
+        <div class="holo-card rounded-2xl p-4 sm:p-5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold uppercase tracking-wider text-amber-400" data-i18n="kpiQuorumThreshold">
+              Quorum &amp; Approval
+            </span>
+            <span class="rounded-md bg-amber-500/15 px-2 py-0.5 font-mono text-[11px] text-amber-300">CHARTER</span>
+          </div>
+          <div class="mt-2.5 font-mono text-2xl font-bold text-white sm:text-3xl">35% / 60%</div>
+          <p class="mt-1 font-mono text-xs text-amber-300/90" data-i18n="kpiQuorumSub">
+            Min Quorum · Supermajority Pass
+          </p>
+        </div>
+
+        <!-- 3. Registered Voters / UES Voting Power -->
+        <div class="holo-card-emerald rounded-2xl p-4 sm:p-5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold uppercase tracking-wider text-[#10b981]" data-i18n="kpiVotingPower">
+              UES Voting Power
+            </span>
+            <span class="rounded-md bg-[#10b981]/15 px-2 py-0.5 font-mono text-[11px] text-[#10b981]">VERIFIED</span>
+          </div>
+          <div id="kpiVotingPowerVal" class="mt-2.5 font-mono text-2xl font-bold text-white sm:text-3xl">128,450</div>
+          <p id="kpiVotingPowerSub" class="mt-1 font-mono text-xs text-emerald-300">
+            14,280 Voters · Avg UES 842
+          </p>
+        </div>
+
+        <!-- 4. Treasury Allocation Reserve -->
+        <div class="holo-card rounded-2xl p-4 sm:p-5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold uppercase tracking-wider text-[#00f0ff]" data-i18n="kpiTreasuryReserve">
+              Treasury Reserve
+            </span>
+            <span class="rounded-md bg-[#00f0ff]/10 px-2 py-0.5 font-mono text-[11px] text-[#00f0ff]">MSN POOL</span>
+          </div>
+          <div id="kpiTreasuryVal" class="mt-2.5 font-mono text-2xl font-bold text-white sm:text-3xl">
+            2,450,000 MSN
+          </div>
+          <p id="kpiTreasurySub" class="mt-1 font-mono text-xs text-slate-400">
+            Committed: 0 MSN · Available
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Interactive Governance Proposal Workbench & Voting Console -->
+    <section class="space-y-4">
+      <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+        <div>
+          <h2 class="text-lg font-bold text-white sm:text-xl" data-i18n="workbenchTitle">
+            Governance Proposal Workbench &amp; Voting Console
+          </h2>
+          <p class="text-xs text-slate-400 sm:text-sm" data-i18n="workbenchDesc">
+            Filter proposals, inspect UES/HCV economic impact, cast weighted votes, or draft a new Mohaserei governance proposal.
+          </p>
+        </div>
+
+        <!-- Filter Tabs: All, Active, Passed, Treasury, Protocol -->
+        <div class="flex flex-wrap gap-1 rounded-xl border border-slate-800 bg-[#0b1120] p-1 text-xs" role="tablist" aria-label="Proposal filters">
+          <button type="button" data-filter="ALL" class="prop-filter-btn rounded-lg px-3 py-1.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]" data-i18n="filterAll">
+            All
+          </button>
+          <button type="button" data-filter="ACTIVE" class="prop-filter-btn rounded-lg px-3 py-1.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]" data-i18n="filterActive">
+            Active
+          </button>
+          <button type="button" data-filter="PASSED" class="prop-filter-btn rounded-lg px-3 py-1.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]" data-i18n="filterPassed">
+            Passed
+          </button>
+          <button type="button" data-filter="TREASURY" class="prop-filter-btn rounded-lg px-3 py-1.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]" data-i18n="filterTreasury">
+            Treasury
+          </button>
+          <button type="button" data-filter="PROTOCOL" class="prop-filter-btn rounded-lg px-3 py-1.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff]" data-i18n="filterProtocol">
+            Protocol
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <!-- Proposal List (5 cols) -->
+        <div class="space-y-3 lg:col-span-5" id="proposalListContainer">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Proposal Detail Inspector & Live Voting Console (7 cols) -->
+        <div class="holo-card flex flex-col justify-between rounded-2xl p-5 sm:p-6 lg:col-span-7" id="proposalInspectorCard">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Create New Proposal Form -->
+      <div class="holo-card rounded-2xl p-5 sm:p-6">
+        <div class="border-b border-slate-800 pb-3">
+          <h3 class="text-base font-bold text-white sm:text-lg" data-i18n="createPropHeading">
+            Draft &amp; Submit New Governance Proposal
+          </h3>
+          <p class="text-xs text-slate-400" data-i18n="createPropDesc">
+            Append a live proposal directly to the Mohaserei governance queue and audit log.
+          </p>
+        </div>
+
+        <form id="createProposalForm" class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-12">
+          <div class="md:col-span-5">
+            <label for="propTitleInput" class="mb-1.5 block text-xs font-medium text-slate-300" data-i18n="propTitleLabel">
+              Proposal Title
+            </label>
+            <input
+              type="text"
+              id="propTitleInput"
+              required
+              placeholder="Expand Kampong Cham & Siem Reap Co-op Grants"
+              class="w-full rounded-xl border border-slate-700/80 bg-[#050811] px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-[#00f0ff] focus:outline-none"
+            />
+          </div>
+
+          <div class="md:col-span-3">
+            <label for="propCategorySelect" class="mb-1.5 block text-xs font-medium text-slate-300" data-i18n="propCategoryLabel">
+              Category
+            </label>
+            <select
+              id="propCategorySelect"
+              class="w-full rounded-xl border border-slate-700/80 bg-[#050811] px-3.5 py-2.5 font-mono text-sm text-white focus:border-[#00f0ff] focus:outline-none"
+            >
+              <option value="TREASURY">TREASURY</option>
+              <option value="PROTOCOL">PROTOCOL</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="propBudgetInput" class="mb-1.5 block text-xs font-medium text-slate-300" data-i18n="propBudgetLabel">
+              Requested MSN
+            </label>
+            <input
+              type="number"
+              id="propBudgetInput"
+              min="0"
+              step="1000"
+              value="45000"
+              required
+              class="w-full rounded-xl border border-slate-700/80 bg-[#050811] px-3.5 py-2.5 font-mono text-sm text-white focus:border-[#00f0ff] focus:outline-none"
+            />
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="propQuorumInput" class="mb-1.5 block text-xs font-medium text-slate-300" data-i18n="propQuorumLabel">
+              Quorum Target (%)
+            </label>
+            <input
+              type="number"
+              id="propQuorumInput"
+              min="15"
+              max="85"
+              step="1"
+              value="35"
+              required
+              class="w-full rounded-xl border border-slate-700/80 bg-[#050811] px-3.5 py-2.5 font-mono text-sm text-white focus:border-[#00f0ff] focus:outline-none"
+            />
+          </div>
+
+          <div class="md:col-span-9">
+            <label for="propSummaryInput" class="mb-1.5 block text-xs font-medium text-slate-300" data-i18n="propSummaryLabel">
+              Proposal Summary &amp; Expected UES / HCV Outcome
+            </label>
+            <input
+              type="text"
+              id="propSummaryInput"
+              required
+              placeholder="Allocate MSN liquidity to provincial merchant onboarding and verified HCV civic tasks."
+              class="w-full rounded-xl border border-slate-700/80 bg-[#050811] px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:border-[#00f0ff] focus:outline-none"
+            />
+          </div>
+
+          <div class="flex items-end md:col-span-3">
+            <button
+              type="submit"
+              class="w-full rounded-xl bg-gradient-to-r from-[#00f0ff] to-[#10b981] px-4 py-2.5 text-sm font-bold text-[#050811] shadow-holoCyan transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[#00f0ff]"
+              data-i18n="submitProposalBtn"
+            >
+              Publish Proposal
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Section 4: Council & Committee Roster / Governance Charter & Rules Matrix -->
+    <section class="holo-card rounded-2xl p-5 sm:p-6">
+      <div class="flex flex-col justify-between gap-3 border-b border-slate-800 pb-4 sm:flex-row sm:items-center">
+        <div>
+          <h2 class="text-lg font-bold text-white sm:text-xl" data-i18n="charterHeading">
+            Council Roster &amp; Governance Charter Matrix
+          </h2>
+          <p class="text-xs text-slate-400 sm:text-sm" data-i18n="charterDesc">
+            Foundational rules covering Council stewardship, regional representation across Cambodia's 25 provinces/capital, UES/HCV mechanics, and Treasury safeguards.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="toggleRegionsDrawerBtn"
+          class="self-start rounded-xl border border-[#10b981]/35 bg-[#10b981]/10 px-3.5 py-2 font-mono text-xs font-semibold text-[#10b981] transition hover:bg-[#10b981]/20 sm:self-auto"
+          data-i18n="view25RegionsBtn"
+        >
+          Inspect All 25 Provinces/Capital
+        </button>
+      </div>
+
+      <!-- 4 Charter & Council Pillars -->
+      <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <!-- Pillar 1: Board / Council Governance -->
+        <div class="rounded-xl border border-slate-800 bg-[#0b1120]/90 p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-[#00f0ff]" data-i18n="pillarBoardTitle">
+              1. Mohaserei Executive &amp; Stewardship Council
+            </h3>
+            <span class="rounded bg-[#00f0ff]/10 px-2 py-0.5 font-mono text-[10px] text-[#00f0ff]">7 SEATS</span>
+          </div>
+          <p class="mt-2 text-xs leading-relaxed text-slate-300" data-i18n="pillarBoardDesc">
+            Elected stewards oversee protocol upgrades, conflict resolution, and charter compliance under transparent term limits and mandatory public audit logs.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[11px] text-slate-400">
+            <span class="rounded border border-slate-800 bg-[#050811] px-2 py-0.5">Protocol Chair</span>
+            <span class="rounded border border-slate-800 bg-[#050811] px-2 py-0.5">UES/HCV Economist</span>
+            <span class="rounded border border-slate-800 bg-[#050811] px-2 py-0.5">Treasury Trustee</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Regional Commune / Province Representation (25 Regions) -->
+        <div class="rounded-xl border border-slate-800 bg-[#0b1120]/90 p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-[#10b981]" data-i18n="pillarRegionalTitle">
+              2. Regional Commune &amp; 25-Province Representation
+            </h3>
+            <span class="rounded bg-[#10b981]/15 px-2 py-0.5 font-mono text-[10px] text-[#10b981]">25 REGIONS</span>
+          </div>
+          <p class="mt-2 text-xs leading-relaxed text-slate-300" data-i18n="pillarRegionalDesc">
+            Every sangkat and commune across Phnom Penh and Cambodia's 24 provinces feeds verified civic and merchant participation into regional delegates.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-1.5 font-mono text-[11px] text-emerald-300/90">
+            <span class="rounded border border-[#10b981]/25 bg-[#050811] px-2 py-0.5">Phnom Penh</span>
+            <span class="rounded border border-[#10b981]/25 bg-[#050811] px-2 py-0.5">Siem Reap</span>
+            <span class="rounded border border-[#10b981]/25 bg-[#050811] px-2 py-0.5">Battambang</span>
+            <span class="rounded border border-[#10b981]/25 bg-[#050811] px-2 py-0.5">+22 Provinces</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3: UES / HCV Economic Rules -->
+        <div class="rounded-xl border border-slate-800 bg-[#0b1120]/90 p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-amber-300" data-i18n="pillarEconomicTitle">
+              3. UES &amp; HCV Economic Voting Rules
+            </h3>
+            <span class="rounded bg-amber-500/15 px-2 py-0.5 font-mono text-[10px] text-amber-300">WEIGHTED</span>
+          </div>
+          <p class="mt-2 text-xs leading-relaxed text-slate-300" data-i18n="pillarEconomicDesc">
+            Voting weight blends verified Human Contribution Value (HCV) and Universal Economic Score (UES) with anti-concentration caps so community contributors retain voice.
+          </p>
+          <div class="mt-3 font-mono text-[11px] text-slate-400">
+            Weight = √(HCV_Verified) × (UES_Score / 1000)
+          </div>
+        </div>
+
+        <!-- Pillar 4: Treasury Safeguards -->
+        <div class="rounded-xl border border-slate-800 bg-[#0b1120]/90 p-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-[#00f0ff]" data-i18n="pillarTreasuryTitle">
+              4. Treasury Safeguards &amp; Timelock Controls
+            </h3>
+            <span class="rounded bg-[#00f0ff]/10 px-2 py-0.5 font-mono text-[10px] text-[#00f0ff]">SAFEGUARD</span>
+          </div>
+          <p class="mt-2 text-xs leading-relaxed text-slate-300" data-i18n="pillarTreasuryDesc">
+            Treasury disbursements require quorum achievement, 60% supermajority approval, milestone verification, and reserve floor protection.
+          </p>
+          <div class="mt-3 font-mono text-[11px] text-slate-400">
+            Reserve Floor ≥ 1,000,000 MSN · Multi-Sig Attestation
+          </div>
+        </div>
+      </div>
+
+      <!-- Expandable 25 Provinces/Capital Directory -->
+      <div id="regions25Drawer" class="mt-4 hidden rounded-xl border border-[#10b981]/30 bg-[#050811]/90 p-4">
+        <div class="mb-2.5 flex items-center justify-between font-mono text-xs">
+          <span class="font-semibold text-[#10b981]" data-i18n="regions25Header">
+            Cambodia 25 Administrative Regions (Khmer &amp; English)
+          </span>
+          <span class="text-slate-400">MSN REGIONAL COUNCIL</span>
+        </div>
+        <div id="regions25Grid" class="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3 md:grid-cols-5">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Audit & Decision Log Table -->
+    <section class="holo-card rounded-2xl p-5 sm:p-6">
+      <div class="flex flex-col justify-between gap-4 border-b border-slate-800 pb-4 md:flex-row md:items-center">
+        <div>
+          <h2 class="text-lg font-bold text-white sm:text-xl" data-i18n="auditHeading">
+            Audit &amp; Decision Log
+          </h2>
+          <p class="text-xs text-slate-400 sm:text-sm" data-i18n="auditDesc">
+            Immutable-style record of votes cast, proposals created, and governance state actions.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <input
+            type="search"
+            id="auditSearchInput"
+            placeholder="Search log..."
+            aria-label="Search audit log"
+            class="w-48 rounded-xl border border-slate-700/80 bg-[#050811] px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-[#00f0ff] focus:outline-none sm:w-56"
+          />
+
+          <select
+            id="auditActionFilter"
+            aria-label="Filter audit actions"
+            class="rounded-xl border border-slate-700/80 bg-[#050811] px-3 py-1.5 font-mono text-xs text-slate-200 focus:border-[#00f0ff] focus:outline-none"
+          >
+            <option value="ALL">ALL EVENTS</option>
+            <option value="VOTE">VOTES</option>
+            <option value="PROPOSAL">PROPOSALS</option>
+            <option value="SYSTEM">SYSTEM</option>
+          </select>
+
+          <button
+            type="button"
+            id="exportJsonBtn"
+            class="flex items-center gap-1.5 rounded-xl border border-[#00f0ff]/40 bg-[#00f0ff]/15 px-3.5 py-1.5 font-mono text-xs font-semibold text-[#00f0ff] transition hover:bg-[#00f0ff]/25 focus:outline-none focus:ring-2 focus:ring-[#00f0ff]"
+          >
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span data-i18n="exportJsonBtn">Export JSON Snapshot</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full min-w-[680px] border-collapse text-left text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b border-slate-800 font-mono text-[11px] uppercase tracking-wider text-slate-400">
+              <th class="px-3 py-2.5" data-i18n="colAuditTime">Timestamp</th>
+              <th class="px-3 py-2.5" data-i18n="colAuditEvent">Event</th>
+              <th class="px-3 py-2.5" data-i18n="colAuditActor">Actor</th>
+              <th class="px-3 py-2.5" data-i18n="colAuditDetails">Decision &amp; Impact Details</th>
+            </tr>
+          </thead>
+          <tbody id="auditTableBody" class="divide-y divide-slate-800/70">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'msn_governance_state_v1';
+
+      const CAMBODIA_25_REGIONS = [
+        { en: 'Phnom Penh', km: 'រាជធានីភ្នំពេញ' },
+        { en: 'Banteay Meanchey', km: 'ខេត្តបន្ទាយមានជ័យ' },
+        { en: 'Battambang', km: 'ខេត្តបាត់ដំបង' },
+        { en: 'Kampong Cham', km: 'ខេត្តកំពង់ចាម' },
+        { en: 'Kampong Chhnang', km: 'ខេត្តកំពង់ឆ្នាំង' },
+        { en: 'Kampong Speu', km: 'ខេត្តកំពង់ស្ពឺ' },
+        { en: 'Kampong Thom', km: 'ខេត្តកំពង់ធំ' },
+        { en: 'Kampot', km: 'ខេត្តកំពត' },
+        { en: 'Kandal', km: 'ខេត្តកណ្ដាល' },
+        { en: 'Kep', km: 'ខេត្តកែប' },
+        { en: 'Koh Kong', km: 'ខេត្តកោះកុង' },
+        { en: 'Kratie', km: 'ខេត្តក្រចេះ' },
+        { en: 'Mondulkiri', km: 'ខេត្តមណ្ឌលគិរី' },
+        { en: 'Oddar Meanchey', km: 'ខេត្តឧត្តរមានជ័យ' },
+        { en: 'Pailin', km: 'ខេត្តប៉ៃលិន' },
+        { en: 'Preah Sihanouk', km: 'ខេត្តព្រះសីហនុ' },
+        { en: 'Preah Vihear', km: 'ខេត្តព្រះវិហារ' },
+        { en: 'Prey Veng', km: 'ខេត្តព្រៃវែង' },
+        { en: 'Pursat', km: 'ខេត្តពោធិ៍សាត់' },
+        { en: 'Ratanakiri', km: 'ខេត្តរតនគិរី' },
+        { en: 'Siem Reap', km: 'ខេត្តសៀមរាប' },
+        { en: 'Stung Treng', km: 'ខេត្តស្ទឹងត្រែង' },
+        { en: 'Svay Rieng', km: 'ខេត្តស្វាយរៀង' },
+        { en: 'Takeo', km: 'ខេត្តតាកែវ' },
+        { en: 'Tboung Khmum', km: 'ខេត្តត្បូងឃ្មុំ' },
+      ];
+
+      const TRANSLATIONS = {
+        en: {
+          navBrand: 'Mohaserei System Network',
+          navSubtitle: 'Sovereign Charter, UES/HCV Voting & Treasury Council',
+          voiceBriefBtn: 'Voice Brief',
+          resetStateBtn: 'Reset Demo State',
+          heroBadge: 'MOHASEREI DAO & REGIONAL COUNCIL · CAMBODIA 25 REGIONS',
+          heroTitle: 'Mohaserei Ecosystem Governance Console',
+          heroDesc:
+            "Coordinate protocol proposals, UES/HCV-weighted member voting, regional commune representation across all 25 Cambodian provinces/capital, and transparent MSN treasury allocations.",
+          voterIdentityLabel: 'Active Delegate:',
+          epochLabel: 'Governance Epoch:',
+          kpiActiveProposals: 'Active Proposals',
+          kpiQuorumThreshold: 'Quorum & Approval',
+          kpiQuorumSub: 'Min Quorum · Supermajority Pass',
+          kpiVotingPower: 'UES Voting Power',
+          kpiTreasuryReserve: 'Treasury Reserve',
+          workbenchTitle: 'Governance Proposal Workbench & Voting Console',
+          workbenchDesc:
+            'Filter proposals, inspect UES/HCV economic impact, cast weighted votes, or draft a new Mohaserei governance proposal.',
+          filterAll: 'All',
+          filterActive: 'Active',
+          filterPassed: 'Passed',
+          filterTreasury: 'Treasury',
+          filterProtocol: 'Protocol',
+          createPropHeading: 'Draft & Submit New Governance Proposal',
+          createPropDesc: 'Append a live proposal directly to the Mohaserei governance queue and audit log.',
+          propTitleLabel: 'Proposal Title',
+          propCategoryLabel: 'Category',
+          propBudgetLabel: 'Requested MSN',
+          propQuorumLabel: 'Quorum Target (%)',
+          propSummaryLabel: 'Proposal Summary & Expected UES / HCV Outcome',
+          submitProposalBtn: 'Publish Proposal',
+          charterHeading: 'Council Roster & Governance Charter Matrix',
+          charterDesc:
+            "Foundational rules covering Council stewardship, regional representation across Cambodia's 25 provinces/capital, UES/HCV mechanics, and Treasury safeguards.",
+          view25RegionsBtn: 'Inspect All 25 Provinces/Capital',
+          pillarBoardTitle: '1. Mohaserei Executive & Stewardship Council',
+          pillarBoardDesc:
+            'Elected stewards oversee protocol upgrades, conflict resolution, and charter compliance under transparent term limits and mandatory public audit logs.',
+          pillarRegionalTitle: '2. Regional Commune & 25-Province Representation',
+          pillarRegionalDesc:
+            "Every sangkat and commune across Phnom Penh and Cambodia's 24 provinces feeds verified civic and merchant participation into regional delegates.",
+          pillarEconomicTitle: '3. UES & HCV Economic Voting Rules',
+          pillarEconomicDesc:
+            'Voting weight blends verified Human Contribution Value (HCV) and Universal Economic Score (UES) with anti-concentration caps so community contributors retain voice.',
+          pillarTreasuryTitle: '4. Treasury Safeguards & Timelock Controls',
+          pillarTreasuryDesc:
+            'Treasury disbursements require quorum achievement, 60% supermajority approval, milestone verification, and reserve floor protection.',
+          regions25Header: 'Cambodia 25 Administrative Regions (Khmer & English)',
+          auditHeading: 'Audit & Decision Log',
+          auditDesc: 'Immutable-style record of votes cast, proposals created, and governance state actions.',
+          exportJsonBtn: 'Export JSON Snapshot',
+          colAuditTime: 'Timestamp',
+          colAuditEvent: 'Event',
+          colAuditActor: 'Actor',
+          colAuditDetails: 'Decision & Impact Details',
+        },
+        km: {
+          navBrand: 'បណ្តាញប្រព័ន្ធមហាសេរី',
+          navSubtitle: 'ធម្មនុញ្ញអភិបាលកិច្ច ការបោះឆ្នោត UES/HCV និងក្រុមប្រឹក្សាឃ្លាំង',
+          voiceBriefBtn: 'សំឡេងសង្ខេប',
+          resetStateBtn: 'កំណត់ទិន្នន័យគំរូថ្មី',
+          heroBadge: 'អភិបាលកិច្ចមហាសេរី និងក្រុមប្រឹក្សាតំបន់ · ២៥ រាជធានី-ខេត្ត',
+          heroTitle: 'មជ្ឈមណ្ឌលអភិបាលកិច្ចប្រព័ន្ធអេកូឡូស៊ីមហាសេរី',
+          heroDesc:
+            'សម្របសម្រួលសំណើប្រព័ន្ធ ការបោះឆ្នោតផ្អែកលើ UES/HCV តំណាងឃុំ/សង្កាត់នៅ២៥រាជធានី-ខេត្តកម្ពុជា និងការបែងចែកថវិកា MSN ដោយតម្លាភាព។',
+          voterIdentityLabel: 'តំណាងសកម្ម៖',
+          epochLabel: 'វដ្តអភិបាលកិច្ច៖',
+          kpiActiveProposals: 'សំណើកំពុងបោះឆ្នោត',
+          kpiQuorumThreshold: 'កូរ៉ុម និងអនុម័ត',
+          kpiQuorumSub: 'កូរ៉ុមអប្បបរមា · សំឡេងភាគច្រើនលើសលប់',
+          kpiVotingPower: 'អំណាចបោះឆ្នោត UES',
+          kpiTreasuryReserve: 'ទុនបម្រុងឃ្លាំង',
+          workbenchTitle: 'កន្លែងគ្រប់គ្រងសំណើ និងប្រព័ន្ធបោះឆ្នោត',
+          workbenchDesc:
+            'ត្រងសំណើ ពិនិត្យផលប៉ះពាល់ UES/HCV បោះឆ្នោតផ្ទាល់ ឬបង្កើតសំណើអភិបាលកិច្ចមហាសេរីថ្មី។',
+          filterAll: 'ទាំងអស់',
+          filterActive: 'កំពុងបោះឆ្នោត',
+          filterPassed: 'បានអនុម័ត',
+          filterTreasury: 'ឃ្លាំងថវិកា',
+          filterProtocol: 'ប្រព័ន្ធ',
+          createPropHeading: 'ព្រាង និងដាក់សំណើអភិបាលកិច្ចថ្មី',
+          createPropDesc: 'បន្ថែមសំណើផ្ទាល់ទៅក្នុងបញ្ជីបោះឆ្នោតមហាសេរី និងកំណត់ត្រាត្រួតពិនិត្យ។',
+          propTitleLabel: 'ចំណងជើងសំណើ',
+          propCategoryLabel: 'ប្រភេទ',
+          propBudgetLabel: 'ថវិកា MSN ស្នើសុំ',
+          propQuorumLabel: 'គោលដៅកូរ៉ុម (%)',
+          propSummaryLabel: 'សេចក្តីសង្ខេប និងលទ្ធផល UES / HCV រំពឹងទុក',
+          submitProposalBtn: 'ផ្សាយសំណើ',
+          charterHeading: 'បញ្ជីក្រុមប្រឹក្សា និងធម្មនុញ្ញអភិបាលកិច្ច',
+          charterDesc:
+            'គោលការណ៍គ្រឹះស្តីពីក្រុមប្រឹក្សា តំណាង២៥រាជធានី-ខេត្តកម្ពុជា វិធាន UES/HCV និងការការពារថវិកាឃ្លាំង។',
+          view25RegionsBtn: 'មើល២៥រាជធានី-ខេត្តទាំងអស់',
+          pillarBoardTitle: '១. ក្រុមប្រឹក្សាប្រតិបត្តិ និងអភិបាលកិច្ចមហាសេរី',
+          pillarBoardDesc:
+            'សមាជិកក្រុមប្រឹក្សាជាប់ឆ្នោតតាមដានការធ្វើបច្ចុប្បន្នភាពប្រព័ន្ធ ការដោះស្រាយវិវាទ និងការគោរពធម្មនុញ្ញដោយតម្លាភាព។',
+          pillarRegionalTitle: '២. តំណាងឃុំ/សង្កាត់ និង២៥រាជធានី-ខេត្ត',
+          pillarRegionalDesc:
+            'គ្រប់សង្កាត់ និងឃុំនៅភ្នំពេញ និង២៤ខេត្តភ្ជាប់ការចូលរួមពលរដ្ឋ និងពាណិជ្ជករទៅកាន់តំណាងតំបន់។',
+          pillarEconomicTitle: '៣. វិធានការបោះឆ្នោតសេដ្ឋកិច្ច UES និង HCV',
+          pillarEconomicDesc:
+            'ទម្ងន់សំឡេងរួមបញ្ចូលតម្លៃរួមចំណែកមនុស្ស (HCV) និងពិន្ទុសេដ្ឋកិច្ចសកល (UES) ប្រកបដោយសមធម៌។',
+          pillarTreasuryTitle: '៤. វិធានការការពារឃ្លាំងថវិកា',
+          pillarTreasuryDesc:
+            'ការចំណាយពីឃ្លាំងតម្រូវឱ្យគ្រប់កូរ៉ុម ទទួលបានសំឡេងគាំទ្រ ៦០% ការផ្ទៀងផ្ទាត់សមិទ្ធផល និងរក្សាទុនបម្រុងអប្បបរមា។',
+          regions25Header: 'រាជធានី និងខេត្តទាំង២៥ នៃព្រះរាជាណាចក្រកម្ពុជា',
+          auditHeading: 'កំណត់ត្រាត្រួតពិនិត្យ និងការសម្រេចចិត្ត',
+          auditDesc: 'កំណត់ត្រាសំឡេងឆ្នោត សំណើដែលបានបង្កើត និងសកម្មភាពប្រព័ន្ធអភិបាលកិច្ច។',
+          exportJsonBtn: 'ទាញយក JSON Snapshot',
+          colAuditTime: 'ពេលវេលា',
+          colAuditEvent: 'ព្រឹត្តិការណ៍',
+          colAuditActor: 'អ្នកអនុវត្ត',
+          colAuditDetails: 'សេចក្តីលម្អិតនៃការសម្រេចចិត្ត',
+        },
+      };
+
+      const INITIAL_STATE = {
+        lang: 'en',
+        filter: 'ALL',
+        selectedProposalId: 'MGP-014',
+        delegateId: 'MSN-GOV-0842',
+        totalVotingPower: 128450,
+        registeredVoters: 14280,
+        avgUes: 842,
+        treasuryReserve: 2450000,
+        userWeight: 420,
+        proposals: [
+          {
+            id: 'MGP-014',
+            title: 'Provincial Commune Onboarding & HCV Civic Grant',
+            titleKm: 'គម្រោងឧបត្ថម្ភការចុះឈ្មោះឃុំ/សង្កាត់ និងសកម្មភាព HCV',
+            category: 'TREASURY',
+            status: 'ACTIVE',
+            requestedMsn: 180000,
+            quorumTargetPct: 35,
+            approvalThresholdPct: 60,
+            uesImpact: '+24 UES',
+            hcvImpact: '+18.5% HCV',
+            summary:
+              'Allocates 180,000 MSN to regional community ambassadors across Battambang, Siem Reap, and Kampong Cham to verify local merchant & civic contributions.',
+            summaryKm:
+              'បែងចែក 180,000 MSN ដល់ភ្នាក់ងារសហគមន៍នៅបាត់ដំបង សៀមរាប និងកំពង់ចាម ដើម្បីផ្ទៀងផ្ទាត់ពាណិជ្ជករ និងការរួមចំណែកសង្គម។',
+            forVotes: 46200,
+            againstVotes: 8400,
+            abstainVotes: 3100,
+            userVote: null,
+          },
+          {
+            id: 'MGP-015',
+            title: 'UES Weighting Cap & Anti-Concentration Guardrail v2.1',
+            titleKm: 'កំណត់ដែនទម្ងន់ UES និងវិធានការពារការប្រមូលផ្តុំ v2.1',
+            category: 'PROTOCOL',
+            status: 'ACTIVE',
+            requestedMsn: 0,
+            quorumTargetPct: 35,
+            approvalThresholdPct: 60,
+            uesImpact: '+16 UES',
+            hcvImpact: '+12.0% HCV',
+            summary:
+              'Refines square-root HCV scaling so everyday commune participants retain strong governance voice relative to large institutional pools.',
+            summaryKm:
+              'កែសម្រួលរូបមន្ត HCV ដើម្បីឱ្យសមាជិកឃុំ/សង្កាត់មានសំឡេងរឹងមាំ និងមានតុល្យភាពក្នុងការសម្រេចចិត្ត។',
+            forVotes: 51800,
+            againstVotes: 6200,
+            abstainVotes: 2400,
+            userVote: null,
+          },
+          {
+            id: 'MGP-016',
+            title: 'Layer 2 Marketplace Settlement Fee Rebate for Co-ops',
+            titleKm: 'បញ្ចុះថ្លៃទូទាត់ទីផ្សារ Layer 2 សម្រាប់សហគមន៍កសិកម្ម',
+            category: 'TREASURY',
+            status: 'ACTIVE',
+            requestedMsn: 95000,
+            quorumTargetPct: 35,
+            approvalThresholdPct: 60,
+            uesImpact: '+19 UES',
+            hcvImpact: '+15.2% HCV',
+            summary:
+              'Subsidizes Layer 2 settlement fees for verified agricultural and craft cooperatives trading on the Mohaserei Marketplace.',
+            summaryKm:
+              'គាំទ្រថ្លៃសេវាទូទាត់ Layer 2 សម្រាប់សហគមន៍កសិកម្ម និងសិប្បកម្មដែលលក់លើទីផ្សារមហាសេរី។',
+            forVotes: 33900,
+            againstVotes: 7100,
+            abstainVotes: 1950,
+            userVote: null,
+          },
+          {
+            id: 'MGP-012',
+            title: '25-Province Administrative Hierarchy Registry Freeze',
+            titleKm: 'បិទបញ្ជីរដ្ឋបាល២៥រាជធានី-ខេត្តសម្រាប់កំណែ v1.0',
+            category: 'PROTOCOL',
+            status: 'PASSED',
+            requestedMsn: 0,
+            quorumTargetPct: 35,
+            approvalThresholdPct: 60,
+            uesImpact: '+30 UES',
+            hcvImpact: '+10.0% HCV',
+            summary:
+              'Ratified standardized province, municipality/district, and sangkat/commune lookup hierarchies across all 25 regions of Cambodia.',
+            summaryKm:
+              'បានអនុម័តបញ្ជីរាជធានី-ខេត្ត ក្រុង/ស្រុក និងសង្កាត់/ឃុំ ស្តង់ដារនៅទូទាំង២៥តំបន់នៃកម្ពុជា។',
+            forVotes: 74500,
+            againstVotes: 5200,
+            abstainVotes: 2800,
+            userVote: 'FOR',
+          },
+          {
+            id: 'MGP-011',
+            title: 'Khmer Voice & Bilingual Accessibility Mandate',
+            titleKm: 'កាតព្វកិច្ចសំឡេងខ្មែរ និងភាសាពីរសម្រាប់វិបផតថល MSN',
+            category: 'PROTOCOL',
+            status: 'PASSED',
+            requestedMsn: 35000,
+            quorumTargetPct: 35,
+            approvalThresholdPct: 60,
+            uesImpact: '+14 UES',
+            hcvImpact: '+21.0% HCV',
+            summary:
+              'Mandates Khmer/English UI switching and Web Speech audio briefings across core Mohaserei member portals.',
+            summaryKm:
+              'កំណត់ការប្តូរភាសាខ្មែរ/អង់គ្លេស និងសំឡេងប្រកាសនៅលើវិបផតថលសំខាន់ៗរបស់មហាសេរី។',
+            forVotes: 68200,
+            againstVotes: 3900,
+            abstainVotes: 1700,
+            userVote: 'FOR',
+          },
+        ],
+        auditLog: [
+          {
+            id: 'AUD-104',
+            timestamp: '2026-11-20 13:10',
+            type: 'SYSTEM',
+            actor: 'MSN-COUNCIL-CORE',
+            detail: 'Epoch #14 governance snapshot synchronized across 25 regional nodes.',
+          },
+          {
+            id: 'AUD-103',
+            timestamp: '2026-11-20 10:25',
+            type: 'PROPOSAL',
+            actor: 'MSN-GOV-0419',
+            detail: 'Proposal MGP-016 (Layer 2 Marketplace Settlement Fee Rebate) opened for voting.',
+          },
+          {
+            id: 'AUD-102',
+            timestamp: '2026-11-19 16:40',
+            type: 'VOTE',
+            actor: 'MSN-GOV-0842',
+            detail: 'Cast FOR vote (+420 UES power) on ratified proposal MGP-012.',
+          },
+        ],
+      };
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return structuredClone(INITIAL_STATE);
+          const parsed = JSON.parse(raw);
+          return {
+            ...structuredClone(INITIAL_STATE),
+            ...parsed,
+            proposals:
+              Array.isArray(parsed.proposals) && parsed.proposals.length
+                ? parsed.proposals
+                : structuredClone(INITIAL_STATE.proposals),
+            auditLog:
+              Array.isArray(parsed.auditLog) && parsed.auditLog.length
+                ? parsed.auditLog
+                : structuredClone(INITIAL_STATE.auditLog),
+          };
+        } catch (err) {
+          console.warn('Failed to parse msn_governance_state_v1:', err);
+          return structuredClone(INITIAL_STATE);
+        }
+      }
+
+      let state = loadState();
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (err) {
+          console.warn('Failed to save msn_governance_state_v1:', err);
+        }
+      }
+
+      function showToast(message, tone = 'cyan') {
+        const host = document.getElementById('toastHost');
+        if (!host) return;
+        const item = document.createElement('div');
+        const cls =
+          tone === 'emerald'
+            ? 'border-[#10b981]/45 bg-[#0b1822]/95 text-emerald-200'
+            : tone === 'amber'
+            ? 'border-amber-400/45 bg-[#19140a]/95 text-amber-200'
+            : 'border-[#00f0ff]/45 bg-[#0b1120]/95 text-[#00f0ff]';
+        item.className = `pointer-events-auto rounded-xl border px-4 py-3 text-xs font-medium shadow-2xl backdrop-blur-md transition duration-300 ${cls}`;
+        item.textContent = message;
+        host.appendChild(item);
+
+        setTimeout(() => {
+          item.style.opacity = '0';
+          setTimeout(() => item.remove(), 250);
+        }, 3000);
+      }
+
+      function formatInt(n) {
+        return Math.round(n || 0).toLocaleString('en-US');
+      }
+
+      function nowStamp() {
+        const d = new Date();
+        const pad = (x) => String(x).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      function appendAudit(type, detail, actor = state.delegateId) {
+        state.auditLog.unshift({
+          id: `AUD-${Math.floor(1000 + Math.random() * 9000)}`,
+          timestamp: nowStamp(),
+          type,
+          actor,
+          detail,
+        });
+      }
+
+      function getFilteredProposals() {
+        return state.proposals.filter((p) => {
+          if (state.filter === 'ALL') return true;
+          if (state.filter === 'ACTIVE') return p.status === 'ACTIVE';
+          if (state.filter === 'PASSED') return p.status === 'PASSED';
+          if (state.filter === 'TREASURY') return p.category === 'TREASURY';
+          if (state.filter === 'PROTOCOL') return p.category === 'PROTOCOL';
+          return true;
+        });
+      }
+
+      function applyTranslations() {
+        const dict = TRANSLATIONS[state.lang] || TRANSLATIONS.en;
+        document.documentElement.lang = state.lang === 'km' ? 'km' : 'en';
+
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const key = el.getAttribute('data-i18n');
+          if (dict[key]) el.textContent = dict[key];
+        });
+
+        document.querySelectorAll('.lang-btn').forEach((btn) => {
+          const active = btn.getAttribute('data-lang') === state.lang;
+          btn.className = `lang-btn rounded-lg px-2.5 py-1 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff] ${
+            active
+              ? 'border border-[#00f0ff]/45 bg-[#00f0ff]/20 text-[#00f0ff]'
+              : 'border border-transparent text-slate-400 hover:text-white'
+          }`;
+        });
+      }
+
+      function renderKpis() {
+        const activeCount = state.proposals.filter((p) => p.status === 'ACTIVE').length;
+        const committedMsn = state.proposals
+          .filter((p) => p.status === 'PASSED')
+          .reduce((sum, p) => sum + (Number(p.requestedMsn) || 0), 0);
+        const availableReserve = Math.max(0, state.treasuryReserve - committedMsn);
+
+        document.getElementById('delegateIdDisplay').textContent = state.delegateId;
+        document.getElementById('kpiActiveCount').textContent = String(activeCount);
+        document.getElementById('kpiActiveSub').textContent =
+          state.lang === 'km'
+            ? `ពីសំណើសរុប ${state.proposals.length}`
+            : `Out of ${state.proposals.length} total proposals`;
+
+        document.getElementById('kpiVotingPowerVal').textContent = formatInt(state.totalVotingPower);
+        document.getElementById('kpiVotingPowerSub').textContent =
+          state.lang === 'km'
+            ? `${formatInt(state.registeredVoters)} អ្នកបោះឆ្នោត · UES មធ្យម ${state.avgUes}`
+            : `${formatInt(state.registeredVoters)} Voters · Avg UES ${state.avgUes}`;
+
+        document.getElementById('kpiTreasuryVal').textContent = `${formatInt(availableReserve)} MSN`;
+        document.getElementById('kpiTreasurySub').textContent =
+          state.lang === 'km'
+            ? `បានបែងចែក៖ ${formatInt(committedMsn)} MSN`
+            : `Allocated: ${formatInt(committedMsn)} MSN`;
+      }
+
+      function renderProposalsAndInspector() {
+        // Update filter tab styles
+        document.querySelectorAll('.prop-filter-btn').forEach((btn) => {
+          const active = btn.getAttribute('data-filter') === state.filter;
+          btn.className = `prop-filter-btn rounded-lg px-3 py-1.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff] ${
+            active
+              ? 'border border-[#00f0ff]/40 bg-[#00f0ff]/20 text-[#00f0ff]'
+              : 'border border-transparent text-slate-400 hover:text-white'
+          }`;
+        });
+
+        const listEl = document.getElementById('proposalListContainer');
+        const inspectorEl = document.getElementById('proposalInspectorCard');
+        const filtered = getFilteredProposals();
+
+        listEl.innerHTML = '';
+
+        if (!filtered.length) {
+          listEl.innerHTML = `
+            <div class="holo-card rounded-2xl p-6 text-center text-xs text-slate-400">
+              ${state.lang === 'km' ? 'មិនមានសំណើតាមប្រភេទនេះទេ។' : 'No proposals match this filter.'}
+            </div>
+          `;
+          inspectorEl.innerHTML = `
+            <div class="py-10 text-center text-xs text-slate-400">
+              ${state.lang === 'km' ? 'ជ្រើសរើសសំណើដើម្បីមើលព័ត៌មានលម្អិត និងបោះឆ្នោត។' : 'Select a proposal to inspect details and cast a vote.'}
+            </div>
+          `;
+          return;
+        }
+
+        let activeProp = filtered.find((p) => p.id === state.selectedProposalId) || filtered[0];
+        state.selectedProposalId = activeProp.id;
+
+        filtered.forEach((prop) => {
+          const isSelected = prop.id === activeProp.id;
+          const totalVotes = prop.forVotes + prop.againstVotes + prop.abstainVotes;
+          const quorumPct = Math.min(100, (totalVotes / state.totalVotingPower) * 100);
+          const titleText = state.lang === 'km' && prop.titleKm ? prop.titleKm : prop.title;
+
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = `w-full rounded-2xl border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-[#00f0ff] ${
+            isSelected
+              ? 'border-[#00f0ff]/60 bg-[#0b1120] shadow-holoCyan'
+              : 'border-slate-800 bg-[#0b1120]/70 hover:border-slate-700'
+          }`;
+
+          const statusBadge =
+            prop.status === 'PASSED'
+              ? 'border-[#10b981]/40 bg-[#10b981]/15 text-[#10b981]'
+              : 'border-[#00f0ff]/40 bg-[#00f0ff]/10 text-[#00f0ff]';
+
+          const catBadge =
+            prop.category === 'TREASURY'
+              ? 'border-amber-400/35 bg-amber-500/10 text-amber-300'
+              : 'border-slate-700 bg-slate-900 text-slate-300';
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-2 font-mono text-[11px]">
+              <span class="font-bold text-slate-300">${prop.id}</span>
+              <div class="flex items-center gap-1.5">
+                <span class="rounded border px-1.5 py-0.5 ${catBadge}">${prop.category}</span>
+                <span class="rounded border px-1.5 py-0.5 ${statusBadge}">${prop.status}</span>
+              </div>
+            </div>
+            <div class="mt-2 text-sm font-bold text-white">${titleText}</div>
+            <div class="mt-3 flex items-center justify-between font-mono text-[11px] text-slate-400">
+              <span>Quorum: ${quorumPct.toFixed(1)}% / ${prop.quorumTargetPct}%</span>
+              <span class="text-[#10b981]">FOR ${formatInt(prop.forVotes)}</span>
+            </div>
+            <div class="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+              <div class="h-full rounded-full bg-gradient-to-r from-[#00f0ff] to-[#10b981]" style="width: ${quorumPct.toFixed(1)}%"></div>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            state.selectedProposalId = prop.id;
+            saveState();
+            renderProposalsAndInspector();
+          });
+
+          listEl.appendChild(card);
+        });
+
+        // Render Detail Inspector & Live Voting Console
+        const totalVotes = activeProp.forVotes + activeProp.againstVotes + activeProp.abstainVotes;
+        const quorumPct = Math.min(100, (totalVotes / state.totalVotingPower) * 100);
+        const decisiveVotes = activeProp.forVotes + activeProp.againstVotes;
+        const approvalPct = decisiveVotes > 0 ? (activeProp.forVotes / decisiveVotes) * 100 : 0;
+
+        const titleText = state.lang === 'km' && activeProp.titleKm ? activeProp.titleKm : activeProp.title;
+        const summaryText = state.lang === 'km' && activeProp.summaryKm ? activeProp.summaryKm : activeProp.summary;
+
+        inspectorEl.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-4">
+              <div>
+                <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+                  <span class="font-bold text-[#00f0ff]">${activeProp.id}</span>
+                  <span class="rounded border border-slate-700 bg-slate-900 px-2 py-0.5 text-slate-300">${activeProp.category}</span>
+                  <span class="rounded border px-2 py-0.5 ${
+                    activeProp.status === 'PASSED'
+                      ? 'border-[#10b981]/40 bg-[#10b981]/15 text-[#10b981]'
+                      : 'border-[#00f0ff]/40 bg-[#00f0ff]/10 text-[#00f0ff]'
+                  }">${activeProp.status}</span>
+                </div>
+                <h3 class="mt-2 text-lg font-bold text-white sm:text-xl">${titleText}</h3>
+              </div>
+
+              <div class="rounded-xl border border-amber-400/30 bg-amber-500/10 px-3 py-2 text-right font-mono">
+                <div class="text-[10px] text-amber-200/80">${state.lang === 'km' ? 'ថវិកាស្នើសុំ' : 'REQUESTED'}</div>
+                <div class="text-sm font-bold text-amber-300">${formatInt(activeProp.requestedMsn)} MSN</div>
+              </div>
+            </div>
+
+            <p class="text-xs leading-relaxed text-slate-300 sm:text-sm">${summaryText}</p>
+
+            <!-- UES / HCV Impact Strip -->
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div class="rounded-xl border border-[#00f0ff]/25 bg-[#050811]/80 p-3">
+                <div class="font-mono text-[10px] uppercase text-slate-400">UES Impact</div>
+                <div class="mt-1 font-mono text-base font-bold text-[#00f0ff]">${activeProp.uesImpact}</div>
+              </div>
+              <div class="rounded-xl border border-[#10b981]/25 bg-[#050811]/80 p-3">
+                <div class="font-mono text-[10px] uppercase text-slate-400">HCV Impact</div>
+                <div class="mt-1 font-mono text-base font-bold text-[#10b981]">${activeProp.hcvImpact}</div>
+              </div>
+              <div class="rounded-xl border border-slate-800 bg-[#050811]/80 p-3">
+                <div class="font-mono text-[10px] uppercase text-slate-400">Approval Ratio</div>
+                <div class="mt-1 font-mono text-base font-bold text-amber-300">${approvalPct.toFixed(1)}% <span class="text-xs font-normal text-slate-400">(req ${activeProp.approvalThresholdPct}%)</span></div>
+              </div>
+            </div>
+
+            <!-- Quorum Progress Bar -->
+            <div class="space-y-1.5 rounded-xl border border-slate-800 bg-[#050811]/80 p-3.5">
+              <div class="flex items-center justify-between font-mono text-xs">
+                <span class="text-slate-300">${state.lang === 'km' ? 'វឌ្ឍនភាពកូរ៉ុម' : 'Quorum Progress'}</span>
+                <span class="font-bold text-[#00f0ff]">${quorumPct.toFixed(1)}% / ${activeProp.quorumTargetPct}%</span>
+              </div>
+              <div class="h-2.5 w-full overflow-hidden rounded-full bg-slate-800">
+                <div
+                  class="h-full rounded-full bg-gradient-to-r from-[#00f0ff] via-[#10b981] to-amber-400 transition-all duration-300"
+                  style="width: ${quorumPct.toFixed(1)}%"
+                ></div>
+              </div>
+              <div class="flex justify-between font-mono text-[11px] text-slate-400">
+                <span>${state.lang === 'km' ? 'សំឡេងសរុប៖' : 'Total Cast:'} ${formatInt(totalVotes)} UES</span>
+                <span>${activeProp.userVote ? `Your Vote: ${activeProp.userVote}` : 'Not voted yet'}</span>
+              </div>
+            </div>
+
+            <!-- Vote Tallies -->
+            <div class="grid grid-cols-3 gap-2.5 font-mono text-xs">
+              <div class="rounded-xl border border-[#10b981]/30 bg-[#10b981]/10 p-3">
+                <div class="text-[10px] text-emerald-300">FOR</div>
+                <div class="mt-0.5 text-sm font-bold text-white">${formatInt(activeProp.forVotes)}</div>
+              </div>
+              <div class="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3">
+                <div class="text-[10px] text-rose-300">AGAINST</div>
+                <div class="mt-0.5 text-sm font-bold text-white">${formatInt(activeProp.againstVotes)}</div>
+              </div>
+              <div class="rounded-xl border border-slate-700 bg-slate-900/80 p-3">
+                <div class="text-[10px] text-slate-400">ABSTAIN</div>
+                <div class="mt-0.5 text-sm font-bold text-white">${formatInt(activeProp.abstainVotes)}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Voting Controls -->
+          <div class="mt-5 border-t border-slate-800 pt-4">
+            <div class="mb-2.5 flex items-center justify-between font-mono text-xs text-slate-400">
+              <span>${state.lang === 'km' ? 'ទម្ងន់សំឡេងរបស់អ្នក៖' : 'Your Voting Weight:'} <strong class="text-[#00f0ff]">+${formatInt(state.userWeight)} UES</strong></span>
+              <span>${state.lang === 'km' ? 'អាចប្តូរសំឡេងបាន' : 'Vote updates immediately'}</span>
+            </div>
+            <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+              <button
+                type="button"
+                id="voteForBtn"
+                class="rounded-xl border border-[#10b981]/50 bg-[#10b981]/20 px-4 py-2.5 text-xs font-bold text-[#10b981] transition hover:bg-[#10b981]/30 focus:outline-none focus:ring-2 focus:ring-[#10b981] sm:text-sm"
+              >
+                ${state.lang === 'km' ? 'បោះឆ្នោត គាំទ្រ (FOR)' : 'Vote For'}
+              </button>
+              <button
+                type="button"
+                id="voteAgainstBtn"
+                class="rounded-xl border border-rose-500/45 bg-rose-500/15 px-4 py-2.5 text-xs font-bold text-rose-300 transition hover:bg-rose-500/25 focus:outline-none focus:ring-2 focus:ring-rose-400 sm:text-sm"
+              >
+                ${state.lang === 'km' ? 'បោះឆ្នោត ជំទាស់ (AGAINST)' : 'Vote Against'}
+              </button>
+              <button
+                type="button"
+                id="voteAbstainBtn"
+                class="rounded-xl border border-amber-400/45 bg-amber-500/15 px-4 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/25 focus:outline-none focus:ring-2 focus:ring-amber-400 sm:text-sm"
+              >
+                ${state.lang === 'km' ? 'អនុបវត្តន៍ (ABSTAIN)' : 'Abstain'}
+              </button>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('voteForBtn').addEventListener('click', () => castVote(activeProp.id, 'FOR'));
+        document.getElementById('voteAgainstBtn').addEventListener('click', () => castVote(activeProp.id, 'AGAINST'));
+        document.getElementById('voteAbstainBtn').addEventListener('click', () => castVote(activeProp.id, 'ABSTAIN'));
+      }
+
+      function castVote(proposalId, choice) {
+        const prop = state.proposals.find((p) => p.id === proposalId);
+        if (!prop) return;
+
+        // Remove previous vote weight if switching vote
+        if (prop.userVote === 'FOR') prop.forVotes = Math.max(0, prop.forVotes - state.userWeight);
+        if (prop.userVote === 'AGAINST') prop.againstVotes = Math.max(0, prop.againstVotes - state.userWeight);
+        if (prop.userVote === 'ABSTAIN') prop.abstainVotes = Math.max(0, prop.abstainVotes - state.userWeight);
+
+        if (choice === 'FOR') prop.forVotes += state.userWeight;
+        if (choice === 'AGAINST') prop.againstVotes += state.userWeight;
+        if (choice === 'ABSTAIN') prop.abstainVotes += state.userWeight;
+
+        prop.userVote = choice;
+
+        // Auto-mark PASSED if quorum met and >= 60% FOR
+        const total = prop.forVotes + prop.againstVotes + prop.abstainVotes;
+        const quorumPct = (total / state.totalVotingPower) * 100;
+        const decisive = prop.forVotes + prop.againstVotes;
+        const approvalPct = decisive > 0 ? (prop.forVotes / decisive) * 100 : 0;
+
+        if (quorumPct >= prop.quorumTargetPct && approvalPct >= prop.approvalThresholdPct && prop.status === 'ACTIVE') {
+          prop.status = 'PASSED';
+        }
+
+        appendAudit('VOTE', `Voted ${choice} (+${state.userWeight} UES weight) on ${prop.id} — ${prop.title}`);
+        saveState();
+        renderKpis();
+        renderProposalsAndInspector();
+        renderAuditLog();
+        showToast(
+          state.lang === 'km'
+            ? `បានកត់ត្រាសំឡេង ${choice} លើសំណើ ${prop.id}`
+            : `Recorded ${choice} vote on ${prop.id}`,
+          choice === 'FOR' ? 'emerald' : 'cyan'
+        );
+      }
+
+      function render25RegionsGrid() {
+        const grid = document.getElementById('regions25Grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        CAMBODIA_25_REGIONS.forEach((reg, idx) => {
+          const cell = document.createElement('div');
+          cell.className = 'rounded-lg border border-slate-800 bg-[#0b1120] px-2.5 py-2';
+          cell.innerHTML = `
+            <div class="font-mono text-[10px] text-[#00f0ff]">#${String(idx + 1).padStart(2, '0')}</div>
+            <div class="font-semibold text-white">${state.lang === 'km' ? reg.km : reg.en}</div>
+            <div class="text-[11px] text-slate-400">${state.lang === 'km' ? reg.en : reg.km}</div>
+          `;
+          grid.appendChild(cell);
+        });
+      }
+
+      function renderAuditLog() {
+        const tbody = document.getElementById('auditTableBody');
+        const query = (document.getElementById('auditSearchInput').value || '').trim().toLowerCase();
+        const actionFilter = document.getElementById('auditActionFilter').value || 'ALL';
+
+        const rows = state.auditLog.filter((item) => {
+          const matchesAction = actionFilter === 'ALL' || item.type === actionFilter;
+          const matchesQuery =
+            !query ||
+            item.detail.toLowerCase().includes(query) ||
+            item.actor.toLowerCase().includes(query) ||
+            item.id.toLowerCase().includes(query);
+          return matchesAction && matchesQuery;
+        });
+
+        tbody.innerHTML = '';
+        if (!rows.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="4" class="px-3 py-6 text-center text-xs text-slate-400">
+                ${state.lang === 'km' ? 'មិនមានកំណត់ត្រាត្រូវនឹងលក្ខខណ្ឌស្វែងរកទេ។' : 'No audit events match your filter.'}
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        rows.forEach((item) => {
+          const badgeCls =
+            item.type === 'VOTE'
+              ? 'border-[#10b981]/35 bg-[#10b981]/10 text-[#10b981]'
+              : item.type === 'PROPOSAL'
+              ? 'border-amber-400/35 bg-amber-500/10 text-amber-300'
+              : 'border-[#00f0ff]/35 bg-[#00f0ff]/10 text-[#00f0ff]';
+
+          const tr = document.createElement('tr');
+          tr.className = 'transition hover:bg-slate-800/35';
+          tr.innerHTML = `
+            <td class="whitespace-nowrap px-3 py-3 font-mono text-xs text-slate-400">${item.timestamp}</td>
+            <td class="px-3 py-3">
+              <span class="inline-block rounded border px-2 py-0.5 font-mono text-[11px] ${badgeCls}">${item.type}</span>
+            </td>
+            <td class="whitespace-nowrap px-3 py-3 font-mono text-xs text-slate-200">${item.actor}</td>
+            <td class="px-3 py-3 text-xs text-slate-200 sm:text-sm">${item.detail}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function exportJsonSnapshot() {
+        try {
+          const snapshot = {
+            exportedAt: new Date().toISOString(),
+            platform: 'Mohaserei System Network (MSN)',
+            module: 'mohaserei_network_ecosystem_governance',
+            state,
+          };
+          const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `mohaserei-governance-snapshot-${Date.now()}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast(
+            state.lang === 'km' ? 'បានទាញយកឯកសារ JSON Snapshot' : 'Exported Mohaserei governance JSON snapshot',
+            'emerald'
+          );
+        } catch (err) {
+          showToast('Unable to export JSON snapshot in this environment.', 'amber');
+        }
+      }
+
+      function speakGovernanceBrief() {
+        const activeCount = state.proposals.filter((p) => p.status === 'ACTIVE').length;
+        const msg =
+          state.lang === 'km'
+            ? `អភិបាលកិច្ចមហាសេរី MSN៖ មានសំណើកំពុងបោះឆ្នោតចំនួន ${activeCount} សំណើ ទុនបម្រុងឃ្លាំង ${formatInt(state.treasuryReserve)} MSN និងអំណាចបោះឆ្នោត UES ${formatInt(state.totalVotingPower)}។`
+            : `Mohaserei governance brief: ${activeCount} active proposals, ${formatInt(state.treasuryReserve)} MSN treasury reserve, and ${formatInt(state.totalVotingPower)} total UES voting power.`;
+
+        if ('speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(msg);
+            utter.lang = state.lang === 'km' ? 'km-KH' : 'en-US';
+            utter.rate = 0.98;
+            utter.onerror = () => showToast(msg, 'cyan');
+            window.speechSynthesis.speak(utter);
+            showToast(state.lang === 'km' ? 'កំពុងអានសេចក្តីសង្ខេប...' : 'Playing governance voice brief...', 'cyan');
+            return;
+          } catch (err) {
+            // Fallback to toast banner
+          }
+        }
+        showToast(msg, 'cyan');
+      }
+
+      function resetDemoState() {
+        state = structuredClone(INITIAL_STATE);
+        appendAudit('SYSTEM', 'Governance demo state reset to baseline charter snapshot.');
+        saveState();
+        applyTranslations();
+        renderKpis();
+        renderProposalsAndInspector();
+        render25RegionsGrid();
+        renderAuditLog();
+        showToast(
+          state.lang === 'km' ? 'បានកំណត់ទិន្នន័យគំរូអភិបាលកិច្ចឡើងវិញ' : 'Reset Mohaserei governance demo state',
+          'amber'
+        );
+      }
+
+      function bindEvents() {
+        document.querySelectorAll('.lang-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.lang = btn.getAttribute('data-lang');
+            saveState();
+            applyTranslations();
+            renderKpis();
+            renderProposalsAndInspector();
+            render25RegionsGrid();
+            renderAuditLog();
+          });
+        });
+
+        document.getElementById('voiceBriefBtn').addEventListener('click', speakGovernanceBrief);
+        document.getElementById('resetDemoBtn').addEventListener('click', resetDemoState);
+
+        document.querySelectorAll('.prop-filter-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.filter = btn.getAttribute('data-filter');
+            saveState();
+            renderProposalsAndInspector();
+          });
+        });
+
+        document.getElementById('createProposalForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const title = document.getElementById('propTitleInput').value.trim();
+          const category = document.getElementById('propCategorySelect').value;
+          const requestedMsn = Math.max(0, parseInt(document.getElementById('propBudgetInput').value, 10) || 0);
+          const quorumTargetPct = Math.min(85, Math.max(15, parseInt(document.getElementById('propQuorumInput').value, 10) || 35));
+          const summary = document.getElementById('propSummaryInput').value.trim();
+
+          if (!title || !summary) {
+            showToast('Please enter both a proposal title and summary.', 'amber');
+            return;
+          }
+
+          const newId = `MGP-${Math.floor(100 + Math.random() * 899)}`;
+          const newProp = {
+            id: newId,
+            title,
+            titleKm: title,
+            category,
+            status: 'ACTIVE',
+            requestedMsn,
+            quorumTargetPct,
+            approvalThresholdPct: 60,
+            uesImpact: '+15 UES',
+            hcvImpact: '+12.5% HCV',
+            summary,
+            summaryKm: summary,
+            forVotes: state.userWeight,
+            againstVotes: 0,
+            abstainVotes: 0,
+            userVote: 'FOR',
+          };
+
+          state.proposals.unshift(newProp);
+          state.selectedProposalId = newId;
+          state.filter = 'ALL';
+          appendAudit('PROPOSAL', `Created proposal ${newId} (${category}, ${formatInt(requestedMsn)} MSN): ${title}`);
+          saveState();
+          document.getElementById('createProposalForm').reset();
+          document.getElementById('propBudgetInput').value = '45000';
+          document.getElementById('propQuorumInput').value = '35';
+
+          renderKpis();
+          renderProposalsAndInspector();
+          renderAuditLog();
+          showToast(
+            state.lang === 'km' ? `បានផ្សាយសំណើថ្មី ${newId}` : `Published new governance proposal ${newId}`,
+            'emerald'
+          );
+        });
+
+        document.getElementById('toggleRegionsDrawerBtn').addEventListener('click', () => {
+          const drawer = document.getElementById('regions25Drawer');
+          drawer.classList.toggle('hidden');
+        });
+
+        document.getElementById('auditSearchInput').addEventListener('input', renderAuditLog);
+        document.getElementById('auditActionFilter').addEventListener('change', renderAuditLog);
+        document.getElementById('exportJsonBtn').addEventListener('click', exportJsonSnapshot);
+      }
+
+      // Initialize application
+      applyTranslations();
+      renderKpis();
+      renderProposalsAndInspector();
+      render25RegionsGrid();
+      renderAuditLog();
+      bindEvents();
+    })();
+  </script>
+</body>
+</html>
